@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 func (b Bitcoin) String() string {
 	return fmt.Sprintf("%d BTC", b)
@@ -20,6 +23,10 @@ func (w *Wallet) Balance() Bitcoin {
 	return w.balance
 }
 
-func (w *Wallet) Withdraw(amount Bitcoin) {
+func (w *Wallet) Withdraw(amount Bitcoin) error {
+	if amount > w.balance {
+		return errors.New("cannot withdraw, insufficient funds")
+	}
 	w.balance -= amount
+	return nil
 }
